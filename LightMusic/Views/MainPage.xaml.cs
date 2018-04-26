@@ -27,5 +27,9 @@ namespace LightMusic.Views
         }
 
         private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private void OpenMusic_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e) {
+            Frame.Navigate(typeof(MediaPlayerPage));
+        }
     }
 }

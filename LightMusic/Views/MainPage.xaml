@@ -24,8 +24,7 @@
         <Grid 
             Grid.Row="1" 
             Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-            <!--The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
-                Place your content here.-->
+            <Button x:Name="OpenMusic" Content="Open" Click="OpenMusic_Click"></Button>
         </Grid>
     </Grid>
 </Page>

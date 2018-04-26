@@ -4,15 +4,96 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:LightMusic.Controls"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
-    <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-        <MediaPlayerElement x:Name="mpe"
-                            AutoPlay="True"
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <AcrylicBrush x:Key="MyAcrylicBrush"
+                                    BackgroundSource="HostBackdrop"
+                                    TintColor="#FFFFFFFF"
+                                    TintOpacity="0"
+                                    FallbackColor="DimGray"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
+            <Storyboard x:Name="EllStoryboard" RepeatBehavior="Forever">
+                <DoubleAnimation Duration="0:0:10" To="360" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" Storyboard.TargetName="ellipse"/>
+                <DoubleAnimation Duration="0:0:10" To="360" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" Storyboard.TargetName="ellipseBlack"/>
+            </Storyboard>
+
+            <controls:DiskplayToVisibility x:Key="DiskplayToVisibility"/>
+
+            <controls:DiskplayToRow x:Key="DiskplayToRow"/>
+
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource MyAcrylicBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="96" />
+        </Grid.RowDefinitions>
+        <Ellipse x:Name="ellipseBlack"
+                Visibility="{x:Bind DisplayDisk, Converter={StaticResource DiskplayToVisibility}, Mode=OneWay}"
+                Width="210"
+                Height="210"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Margin="75,-20,75,45"
+                RenderTransformOrigin="0.5,0.5">
+            <Ellipse.RenderTransform>
+                <CompositeTransform/>
+            </Ellipse.RenderTransform>
+            <Ellipse.Fill>
+                <ImageBrush ImageSource="ms-appx:///Assets/a.png" Stretch="Fill"/>
+            </Ellipse.Fill>
+        </Ellipse>
+        <Ellipse x:Name="ellipse"
+                Visibility="{x:Bind DisplayDisk, Converter={StaticResource DiskplayToVisibility}, Mode=OneWay}"
+                Width="180"
+                Height="180"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Margin="75,-20,75,45"
+                RenderTransformOrigin="0.5,0.5">
+            <Ellipse.RenderTransform>
+                <CompositeTransform/>
+            </Ellipse.RenderTransform>
+            <Ellipse.Fill>
+                <ImageBrush x:Name="DiskImage" ImageSource="ms-appx:///Assets/music.png" Stretch="Fill"/>
+            </Ellipse.Fill>
+        </Ellipse>
+        <TextBlock Margin="0,190,0,0"
+                   Visibility="{x:Bind DisplayDisk, Converter={StaticResource DiskplayToVisibility}, Mode=OneWay}"
+                   x:Name="TitleText"
+                   Foreground="White"
+                   FontSize="22"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center">
+        </TextBlock>
+        <TextBlock Margin="0,260,0,0"
+                   Visibility="{x:Bind DisplayDisk, Converter={StaticResource DiskplayToVisibility}, Mode=OneWay}"
+                   x:Name="AlbumText"
+                   Foreground="White"
+                   FontSize="22"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center">
+        </TextBlock>
+        <MediaElement MinHeight="96" x:Name="mpe"
+                            Grid.Row="{x:Bind DisplayDisk, Converter={StaticResource DiskplayToRow}, Mode=OneWay}"
+                            AutoPlay="False"
                             AreTransportControlsEnabled="True">
-            <MediaPlayerElement.TransportControls>
-                <MediaTransportControls IsCompact="False"/>
-            </MediaPlayerElement.TransportControls>
-        </MediaPlayerElement>
+            <MediaElement.TransportControls>
+                <controls:CustomMediaTransportControls IsCompact="False"
+                                                       IsStopButtonVisible="True"
+                                                       PlayPause="CustomMTC_PlayPause"
+                                                       OpenFile="CustomMTC_OpenFile"
+                                                       StopPlay="CustomMTC_StopPlay"/>
+            </MediaElement.TransportControls>
+
+        </MediaElement>
     </Grid>
 </Page>
